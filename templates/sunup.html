@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .registration-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .registration-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .registration-form h2 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .form-check-label {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="registration-container">
+    <form class="registration-form" action="/ajoute_client" method="POST">
+        <h2 class="text-center">Inscription</h2>
+
+      
+
+        <div class="form-group">
+            <label for="firstName">Prénom</label>
+            <input type="text" class="form-control" id="firstName" placeholder="Entrez votre prénom" name="prenom" required>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Nom</label>
+            <input type="text" class="form-control" id="lastName" placeholder="Entrez votre nom" name="nom" required>
+        </div>
+        <div class="form-group">
+            <label for="direction">Direction</label>
+            <input type="text" class="form-control" id="direction" placeholder="Entrez votre direction" name="direction" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Entrez votre email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe" name="password" required>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="terms" required>
+            <label class="form-check-label" for="terms">J'accepte les <a href="#">termes et conditions</a></label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
+        <div class="text-center mt-3">
+            <p>Déjà inscrit ? <a href="{{ url_for('login_client') }}">Se connecter</a></p>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

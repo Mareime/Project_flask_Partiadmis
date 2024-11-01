@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Accueil Client</title>
+    <style>
+        .intervention-form {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Liste des Intervenants</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Poste</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in intervenants %}
+            <tr>
+                <td>{{ e.id }}</td>
+                <td>{{ e.nom }}</td>
+                <td>{{ e.prenom }}</td>
+                <td>{{ e.email }}</td>
+                <td>{{ e.poste }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#interventionForm{{ e.id }}">
+                        Créer une Intervention
+                    </button>
+                </td>
+            </tr>
+
+            <!-- Formulaire de création d'intervention -->
+            <tr id="interventionForm{{ e.id }}" class="collapse">
+                <td colspan="6">
+                    <div class="intervention-form">
+                        <h5>Créer une Intervention</h5>
+                        <form action="{{url_for('create_intervention')}}" method="POST">
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input type="datetime-local" class="form-control" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="type">Type</label>
+                                <input type="text" class="form-control" id="type" name="type" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="motive">Motif</label>
+                                <textarea class="form-control" id="motive" name="motive" rows="3" required></textarea>
+                            </div>
+                            <input type="hidden" name="intervenant_id" value="{{ e.id }}">
+                            <button type="submit" class="btn btn-success">Créer l'Intervention</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

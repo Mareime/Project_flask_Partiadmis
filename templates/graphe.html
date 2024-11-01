@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Tableau de Bord Administrateur</title>
+    <style>
+        body {
+            background-color: #f8f9fa; 
+        }
+        .sidebar {
+            height: 100vh;
+            background-color: #6e87a2; 
+            color: white;
+        }
+        .sidebar a {
+            color: white;
+        }
+        .card {
+            background-color: white; 
+            border-radius: 20px;
+        }
+        .card-title {
+            color: #6e87a2; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 sidebar d-none d-md-block">
+            <div class="sidebar-sticky">
+                <h5 class="text-center">Admin Dashboard</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{url_for('dashbord')}}">
+                            <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('dashbordClient')}}">
+                            <i class="fas fa-user-friends"></i> Clients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('dashbordIntervenant')}}">
+                            <i class="fas fa-user-tie"></i> Intervenants
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('dashbordIntervation')}}">
+                            <i class="fas fa-tasks"></i> Interventions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> Statistiques</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h2>Tableau de bord</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-user"></i> Utilisateurs Totaux</h5>
+                            <p class="card-text">{{ clients|length }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-user-tie"></i> Intervenants</h5>
+                            <p class="card-text">{{ intervenants|length }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-tasks"></i> Interventions</h5>
+                            <p class="card-text">{{ interventions|length }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Statistiques des Tâches</h3>
+                        <canvas id="tasksChart"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Tâches par Intervenant</h3>
+                        <canvas id="intervenantsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    fetch('/data/dashboard')  
+        .then(response => response.json())
+        .then(data => {
+            const tasksCtx = document.getElementById('tasksChart').getContext('2d');
+            new Chart(tasksCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Réalisées', 'En attente'],
+                    datasets: [{
+                        data: [data.tasks.realisees, data.tasks.en_attente],
+                        backgroundColor: ['#36A2EB', '#FF6384'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Pourcentage des tâches réalisées et en attente'
+                    }
+                }
+            });
+
+            const intervenantsCtx = document.getElementById('intervenantsChart').getContext('2d');
+            new Chart(intervenantsCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data.intervenants),
+                    datasets: [{
+                        data: Object.values(data.intervenants),
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40'
+                        ],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Pourcentage des tâches réalisées par chaque intervenant'
+                    }
+                }
+            });
+        });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

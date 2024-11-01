@@ -1,0 +1,33 @@
+body {
+    background-color: #e9ecef;
+}
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 400px;
+}
+.login-form h2 {
+    font-weight: 600;
+}
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+.text-center a {
+    color: #007bff;
+}
+.text-center a:hover {
+    text-decoration: underline;
+}

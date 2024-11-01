@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Tableau de Bord Administrateur</title>
+    <style>
+        body {
+            background-color: #f8f9fa; /* Couleur de fond claire */
+        }
+        .sidebar {
+            height: 100vh;
+            background-color: #6e87a2; /* Bleu */
+            color: white;
+        }
+        .sidebar a {
+            color: white;
+        }
+        .card {
+            background-color: white; /* Blanc pour les cartes */
+            border-radius: 20px;
+        }
+        .card-title {
+            color: #6e87a2; /* Titre en bleu */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 sidebar d-none d-md-block">
+            <div class="sidebar-sticky">
+                <h5 class="text-center">Admin Dashboard</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('dashbord') }}">
+                            <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('dashbordClient')}}">
+                            <i class="fas fa-user-friends"></i> Clients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashbordIntervenant') }}">
+                            <i class="fas fa-user-tie"></i> Intervenants
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('dashbordIntervation')}}">
+                            <i class="fas fa-tasks"></i> Interventions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('graphe')}}">
+                            <i class="fas fa-chart-line"></i> Statistiques
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-cog"></i> Paramètres
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('logout')}}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h2>Tableau de bord</h2>
+           
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-user"></i> Utilisateurs Totaux</h5>
+                            <p class="card-text">{{ clients|length }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-user-tie"></i> Intervenants</h5>
+                            <p class="card-text">{{ intervenants|length }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-tasks"></i> Interventions</h5>
+                            <p class="card-text">{{ interventions|length }}</p>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addModal" style="background:#53687f;" >
+                    <i class="fas fa-plus"></i> Ajouter Intervenant
+                </button>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Poste</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in intervenants %}
+                    <tr>
+                        <td>{{ e.id }}</td>
+                        <td>{{ e.nom }}</td>
+                        <td>{{ e.prenom }}</td>
+                        <td>{{ e.email }}</td>
+                        <td>{{ e.poste }}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{ e.id }}">
+                                Editer
+                            </button>
+                            <form action="{{ url_for('delete_intervenants', id=e.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    <!-- Modal for editing intervenant -->
+                    <div class="modal fade" id="editModal{{ e.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ e.id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel{{ e.id }}">Modifier Intervenant</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="{{ url_for('edit_intervenant', id=e.id) }}">
+                                        <div class="form-group">
+                                            <label for="nom">Nom</label>
+                                            <input type="text" class="form-control" id="nom" name="nom" value="{{ e.nom }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="prenom">Prénom</label>
+                                            <input type="text" class="form-control" id="prenom" name="prenom" value="{{ e.prenom }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="poste">Poste</label>
+                                            <input type="text" class="form-control" id="poste" name="poste" value="{{ e.poste }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" value="{{ e.email }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Mot de Passe </label>
+                                            <input type="password" class="form-control" id="password" name="password" value="{{ e.password }}" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+    </div>
+</div>
+
+<!-- Modal for adding a new intervenant -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Ajouter Intervenant</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('add_intervenant') }}">
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom">Prénom</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="poste">Poste</label>
+                        <input type="text" class="form-control" id="poste" name="poste" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mot de Passe</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
