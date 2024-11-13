@@ -7,23 +7,37 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Tableau de Bord Administrateur</title>
     <style>
-        body {
-            background-color: #f8f9fa; /* Couleur de fond claire */
-        }
         .sidebar {
             height: 100vh;
-            background-color: #6e87a2; /* Bleu */
+            background-color: #6e87a2;
             color: white;
         }
+
         .sidebar a {
             color: white;
         }
+
         .card {
-            background-color: white; /* Blanc pour les cartes */
+            background-color: white;
             border-radius: 20px;
         }
+
         .card-title {
-            color: #6e87a2; /* Titre en bleu */
+            color: #6e87a2;
+        }
+
+        /* S'assurer que les images s'ajustent bien */
+        .img-fluid {
+            max-width: 80%;
+            height: auto;
+        }
+
+        .sidebar h5 {
+            margin-top: 20px;
+        }
+
+        .sidebar .nav-item {
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -70,9 +84,9 @@
                             <i class="fas fa-cog"></i> Paramètres
                         </a>
                     </li> -->
-                    <!-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{url_for('logout')}}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
         </nav>

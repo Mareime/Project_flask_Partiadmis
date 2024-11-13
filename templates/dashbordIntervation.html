@@ -44,6 +44,46 @@ option {
         .card-title {
             color: #6e87a2; /* Titre en bleu */
         }
+        
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .nav-link:hover {
+            color: #f8f9fa !important;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
+
+        .card {
+            margin-top: 30px;
+        }
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .nav-link:hover {
+            color: #f8f9fa !important;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+    </style>
     </style>
 </head>
 <body>
@@ -88,10 +128,10 @@ option {
                         <a class="nav-link" href="#">
                             <i class="fas fa-cog"></i> Paramètres
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('logout')}}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -159,9 +199,9 @@ option {
                             <td>{{ e.id_client }}</td>
                             <td>
                                 <!-- Edit Button -->
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#editModal{{ e.id }}">
+                                <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#editModal{{ e.id }}">
                                     <i class="fas fa-edit"></i> Editer
-                                </button>
+                                </button> -->
 
                                 <!-- Delete Button -->
                                 <form method="POST" action="{{ url_for('delete_intervention', id=e.id) }}" style="display:inline;">

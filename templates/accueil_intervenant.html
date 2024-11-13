@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Accueil Intervenant</title>
+    <style>
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .nav-link:hover {
+            color: #f8f9fa !important;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
+
+        .card {
+            margin-top: 30px;
+        }
+
+        .no-intervention {
+            text-align: center;
+            font-size: 18px;
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barre de navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Intervenant Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('accueil_intervenant', id=intervenant.id) }}">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="text-center mb-4">Bienvenue {{ intervenant.nom }} {{ intervenant.prenom }}</h2>
+
+        <div class="row">
+            <!-- Tableau des interventions assignées à l'intervenant -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Interventions assignées</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if interventions|length == 0 %}
+                            <div class="no-intervention">
+                                <p>Aucune intervention enregistrée.</p>
+                            </div>
+                        {% else %}
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Motif</th>
+                                        <th>État</th>
+                                        <th>Nom complet Client</th>
+                                        <th>Client Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for intervention in interventions %}
+                                        <tr>
+                                            <td>{{ intervention.id }}</td>
+                                            <td>{{ intervention.date.strftime('%d/%m/%Y %H:%M') }}</td>
+                                            <td>{{ intervention.type }}</td>
+                                            <td>{{ intervention.motive }}</td>
+                                            <td>{{ intervention.etat }}</td>
+                                            <td>{{ intervention.client.nom }} {{ intervention.client.prenom }}</td>
+                                            <td>{{ intervention.client.email }} </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
